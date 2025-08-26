@@ -116,6 +116,16 @@ func (t *UserTask) DeleteIdentityLink(query ReqIdentityLink) error {
 	return nil
 }
 
+// Claim claim user task
+func (t *UserTask) Claim(taskID, userID string) error {
+	err := t.api.Claim(taskID, userID)
+	if err != nil {
+		return fmt.Errorf("can't claim task: %w", err)
+	}
+
+	return nil
+}
+
 // delegationState task delegation state
 type delegationState string
 
@@ -364,6 +374,11 @@ type QueryUserTaskComplete struct {
 	Variables map[string]Variable `json:"variables"`
 }
 
+type UserTaskClaim struct {
+	// A JSON object containing variable key-value pairs
+	UserID string `json:"userId"`
+}
+
 // MarshalJSON marshal to json
 func (q *UserTaskGetListQuery) MarshalJSON() ([]byte, error) {
 	type Alias UserTaskGetListQuery
@@ -529,6 +544,28 @@ func (t *userTaskApi) DeleteIdentityLink(id string, query ReqIdentityLink) error
 
 	if res != nil {
 		res.Body.Close()
+	}
+
+	return nil
+}
+
+// Claim task
+func (t *userTaskApi) Claim(taskId, userID string) error {
+
+	body := UserTaskClaim{
+		UserID: userID,
+	}
+
+	res, err := t.client.doPostJson("/task/"+taskId+"/claim", map[string]string{}, body)
+	if err != nil {
+		return fmt.Errorf("can't post json: %w", err)
+	}
+
+	if res != nil {
+		errToClose := res.Body.Close()
+		if errToClose != nil {
+			return errToClose
+		}
 	}
 
 	return nil

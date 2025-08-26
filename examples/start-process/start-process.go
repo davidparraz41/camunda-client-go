@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	camundaclientgo "github.com/davidparraz41/camunda-client-go/v3"
 	"time"
+
+	camundaclientgo "github.com/davidparraz41/camunda-client-go/v3"
 )
 
 func main() {

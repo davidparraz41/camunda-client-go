@@ -172,6 +172,10 @@ func (c *Client) doPost(path string, query map[string]string) (res *http.Respons
 	return c.do(http.MethodPost, path, query, nil, "")
 }
 
+func (c *Client) doPostBody(path string, body io.Reader, query map[string]string) (res *http.Response, err error) {
+	return c.do(http.MethodPost, path, query, body, "")
+}
+
 func (c *Client) do(method, path string, query map[string]string, body io.Reader, contentType string) (res *http.Response, err error) {
 	url, err := c.buildUrl(path, query)
 	if err != nil {
