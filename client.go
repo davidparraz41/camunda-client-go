@@ -45,6 +45,7 @@ type Client struct {
 	Message           *Message
 	History           *History
 	Tenant            *Tenant
+	FormTask          *formTaskApi
 }
 
 var ErrorNotFound = &Error{
@@ -122,6 +123,7 @@ func NewClient(options ClientOptions) *Client {
 	client.Message = &Message{client: client}
 	client.History = &History{client: client}
 	client.Tenant = &Tenant{client: client}
+	client.FormTask = &formTaskApi{client: client}
 
 	return client
 }
