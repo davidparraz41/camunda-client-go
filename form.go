@@ -5,8 +5,8 @@ import (
 )
 
 type ComundaFormComponentLayout struct {
-	Row     string `json:"row"`
-	Columns any    `json:"columns"`
+	Row     string      `json:"row"`
+	Columns interface{} `json:"columns"`
 }
 
 type ComundaFormComponent struct {
@@ -33,7 +33,7 @@ func (u *formTaskApi) GetForm(taskId string) (*ComundaForm, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var resp ComundaForm
 
 	if err := u.client.readJsonResponse(res, &resp); err != nil {
